@@ -42,11 +42,11 @@ const Page = () => {
           >
             Chat with Employee Manual
           </Link>
-          <Link href="/workspace/new">
+          {/* <Link href="/workspace/new">
             <div className="text-xs md:text-base text-[#1C17FF] hover:opacity-65 focus:outline-none flex items-center justify-center mt-10">
               Create your own
             </div>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>

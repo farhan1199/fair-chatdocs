@@ -94,7 +94,7 @@ const Sidenav: React.FC = () => {
               })}
             </>
           )}
-          <li className="mt-6">
+          {/* <li className="mt-6">
             <SidenavItem
               title="Create Workspace"
               href="/workspace/new"
@@ -107,7 +107,7 @@ const Sidenav: React.FC = () => {
               }
               animatedBorder
             />
-          </li>
+          </li> */}
         </ul>
       </div>
       <button

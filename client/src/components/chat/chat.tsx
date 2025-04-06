@@ -206,69 +206,9 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
               }
             }}
           />
-          <div className="flex-shrink-0 relative">
-            <Tooltip
-              text={
-                workspace.locked ? "Read-Only Workspace" : "Add PDF documents."
-              }
-              position="top"
-            >
-              <UploadButton
-                workspaceId={workspace.id}
-                uploadCompletionCallback={fetchFiles}
-                locked={workspace.locked ?? false}
-              />
-            </Tooltip>
-          </div>
         </div>
 
         {/* Document Tray */}
-        <div className="flex flex-col items-center bg-white/80 backdrop-blur-lg border border-gray-300 rounded shadow-md">
-          <button
-            onClick={toggleOpen}
-            className={`flex flex-row items-center justify-center font-normal cursor-pointer w-full p-2 gap-1 transition duration-200 ease-in-out hover:bg-slate-50 border-b`}
-          >
-            <span className="text-gray-500 text-sm">
-              {workspace.locked ? "View Documents" : "Manage Documents"}{" "}
-              {fetchingFiles ? (
-                <>
-                  (
-                  <div className="inline-block w-2 h-4 mx-0 translate-y-1 bg-gray-200 animate-pulse" />
-                  )
-                </>
-              ) : (
-                `(${files.length})`
-              )}
-            </span>
-            <div className={"-rotate-90 text-gray-500 scale-105"}>
-              {documentTrayIsOpen ? <FiChevronRight /> : <FiChevronLeft />}
-            </div>
-          </button>
-          {documentTrayIsOpen && (
-            <div className="p-2 py-5 max-h-[120px] overflow-auto no-scrollbar">
-              {files.length > 0 ? (
-                <div className="flex flex-wrap gap-x-2 gap-y-5 ">
-                  {files.map((file) => (
-                    <FileCard
-                      key={file.name}
-                      fileUrl={file.url}
-                      handleDeleteFile={() => handleDeleteFile(file.documentId)}
-                      readOnly={workspace.locked}
-                    />
-                  ))}
-                </div>
-              ) : fetchingFiles ? (
-                <div className="text-gray-500 text-sm animate-pulse">
-                  Fetching documents...
-                </div>
-              ) : (
-                <div className="text-gray-500 text-sm">
-                  No documents uploaded
-                </div>
-              )}
-            </div>
-          )}
-        </div>
       </form>
     </div>
   );
