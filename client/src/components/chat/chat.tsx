@@ -1,5 +1,3 @@
-// chat.tsx where the upload call is made
-
 "use client";
 import { useChat } from "ai/react";
 import { ChatMessage } from "./chat-message";
@@ -9,7 +7,12 @@ import { PromptGrid } from "../ui/prompt-grid";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Tooltip } from "../ui/tooltip";
 import FileCard from "../ui/file-card";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiSend,
+  FiPaperclip,
+} from "react-icons/fi";
 import { FetchedFile } from "@/app/api/files/route";
 
 const fetchFileUrls = async (workspaceId: string) => {
@@ -134,32 +137,72 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
   }, [documentTrayIsOpen, fetchFiles]);
 
   return (
-    <div className="relative flex flex-col w-full max-w-md md:max-w-2xl h-full py-24 items-center justify-start">
-      <div className={messages.length > 0 ? " h-full w-full " : "w-full"}>
-        {messages.map((m) => (
-          <div key={m.id} className={"whitespace-pre-wrap max-w-fit w-full"}>
-            <ChatMessage key={m.id} message={m} />
+    <div className="relative flex flex-col w-full  h-full py-8 mx-auto px-4 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-sm">
+      <div className="mb-6 pl-2">
+        <h2 className="text-xl font-semibold text-gray-800">
+          {workspace.name}
+        </h2>
+        <p className="text-sm text-gray-500">Chatting with your documents</p>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-2 py-4 rounded-lg bg-white/80 backdrop-blur-sm shadow-inner">
+        {messages.length > 0 ? (
+          <div className="space-y-6">
+            {messages.map((m) => (
+              <div key={m.id} className="whitespace-pre-wrap">
+                <ChatMessage key={m.id} message={m} />
+              </div>
+            ))}
           </div>
-        ))}
-        {isLoading && (
-          <div className="animate-pulse bg-gray-500 h-4 w-4 rotate-45 rounded-sm"></div>
+        ) : (
+          <div className="h-full flex items-center justify-center flex-col">
+            <div className="bg-blue-50 rounded-full p-6 mb-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#1C17FF"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">
+              Start a conversation
+            </h3>
+            <p className="text-sm text-gray-500 text-center max-w-md">
+              Ask questions about your documents in this workspace. The AI will
+              use these documents to provide answers.
+            </p>
+          </div>
         )}
-        <div className={documentTrayIsOpen ? "h-[70%]" : "h-1/3"}></div>
+        {isLoading && (
+          <div className="flex items-center justify-center py-4">
+            <div className="flex space-x-2">
+              <div className="animate-bounce bg-[#1C17FF] h-2 w-2 rounded-full delay-0"></div>
+              <div className="animate-bounce bg-[#1C17FF] h-2 w-2 rounded-full delay-150"></div>
+              <div className="animate-bounce bg-[#1C17FF] h-2 w-2 rounded-full delay-300"></div>
+            </div>
+          </div>
+        )}
       </div>
 
       <form
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
-        className="fixed bottom-0 w-full max-w-[300px] sm:max-w-[400px] md:max-w-2xl z-50 pb-10"
+        className="mt-6 relative"
       >
-        <div className="flex flex-row items-center h-fit mb-4">
+        <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden focus-within:ring-2 focus-within:ring-[#1C17FF] focus-within:ring-opacity-50">
           <textarea
-            className={
-              "p-4 px-5 border border-gray-300 bg-white/80 text-black rounded flex-grow mr-4 backdrop-blur-lg shadow-md overflow-y-auto resize-none " +
-              (isLoading ? "cursor-not-allowed" : "cursor-text")
-            }
+            className="p-4 flex-grow bg-transparent text-black outline-none resize-none min-h-[60px] max-h-[200px]"
             value={input}
             placeholder={
-              isLoading ? "Responding..." : "Chat with this workspace..."
+              isLoading
+                ? "Responding..."
+                : "Ask a question about your documents..."
             }
             disabled={isLoading}
             onChange={handleInputChange}
@@ -170,12 +213,6 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
               }
             }}
             rows={1}
-            style={{
-              height: "auto",
-              maxHeight: "30vh",
-              overflow: "auto",
-              scrollbarColor: "transparent transparent",
-            }}
             ref={(textarea) => {
               if (textarea) {
                 textarea.style.height = "auto";
@@ -187,9 +224,52 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
               }
             }}
           />
+          <div className="flex items-center pr-4 space-x-2">
+            {/* <button
+              type="button"
+              onClick={toggleOpen}
+              className="text-gray-500 hover:text-[#1C17FF] p-2 rounded-full transition-colors"
+            >
+              <FiPaperclip className="h-5 w-5" />
+            </button> */}
+            <button
+              type="submit"
+              disabled={isLoading || input.trim() === ""}
+              className={`p-2 rounded-full ${
+                isLoading || input.trim() === ""
+                  ? "bg-gray-100 text-gray-400"
+                  : "bg-[#1C17FF] text-white hover:bg-[#1914da]"
+              } transition-colors`}
+            >
+              <FiSend className="h-5 w-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Document Tray */}
+        {documentTrayIsOpen && (
+          <div className="absolute bottom-full mb-4 w-full bg-white rounded-lg shadow-lg border border-gray-200 p-4 space-y-3 max-h-[300px] overflow-y-auto">
+            <div className="flex justify-between items-center">
+              <h3 className="font-medium text-gray-800">Workspace Documents</h3>
+              <button
+                onClick={toggleOpen}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   );
