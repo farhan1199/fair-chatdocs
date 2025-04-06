@@ -147,25 +147,6 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
         <div className={documentTrayIsOpen ? "h-[70%]" : "h-1/3"}></div>
       </div>
 
-      {/* {messages.length === 0 && (
-        <div className="relative flex flex-col items-center justify-center h-full">
-
-          {!fetchingFiles && (files.length > 0 ? (
-            < PromptGrid
-              prompts={prompts}
-              activePromptIndex={activePromptIndex}
-              onMouseOver={(index: number) => setActivePromptIndex(index)}
-              promptListRef={promptListRef}
-              handleSubmit={handlePromptSubmit}
-            />) : (
-
-            <div className="text-gray-500 text-sm">{workspace.name === 'Empty Workspace' ? 'This is an example workspace with no uploaded documents for context. Try ask a question about \"Richard Feynman\" or any other workspace.' 
-            : 'No documents in this workspace... upload below!'}</div>
-          ))
-          }
-        </div>
-      )} */}
-
       <form
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
         className="fixed bottom-0 w-full max-w-[300px] sm:max-w-[400px] md:max-w-2xl z-50 pb-10"
