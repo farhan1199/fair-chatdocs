@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       const result = await experimental_streamText({
         system: systemContent,
         temperature: 0.2,
-        model: openai.chat("gpt-4-turbo"),
+        model: openai.chat("gpt-4o"),
         maxRetries: 8,
         messages,
       });

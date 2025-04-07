@@ -28,7 +28,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           "flex max-w-[85%] md:max-w-[75%] overflow-hidden rounded-2xl px-4 py-3.5 shadow-sm",
           message.role === "user"
             ? "bg-[#1C17FF] text-white"
-            : "bg-white border border-gray-100"
+            : "bg-white border border-gray-300"
         )}
       >
         <div className="flex flex-col space-y-2 overflow-hidden pl-[8px] pr-[5px]">
