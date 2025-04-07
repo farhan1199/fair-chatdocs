@@ -27,9 +27,9 @@ export const useWorkspaceChatContext = () => useContext(WorkspaceChatContext);
 
 const defaultWorkspaces: Workspace[] = [
   {
-    id: "fc8d47ed-7556-4495-802e-8bb96ca9756e",
+    id: "Employee-Manual-38e8ef41-0b71-42d9-8e82-7479faf95234",
     name: "Employee Manual",
-    createdAt: 1743861424667,
+    createdAt: 1744040775759,
     fileUrls: [],
   },
 ];
