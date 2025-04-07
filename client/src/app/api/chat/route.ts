@@ -2,8 +2,6 @@ import { StreamingTextResponse, experimental_streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
 import OpenAI from "openai";
 
-export const runtime = "edge";
-
 // Type definitions
 type Metadata = {
   referenceURL: string;
@@ -186,20 +184,28 @@ async function getMatchesFromEmbeddings(
   topK: number,
   namespace: string
 ): Promise<ScoredRecord[]> {
-  const indexName = process.env.PINECONE_INDEX_NAME || "namespace-notes";
-  const apiKey = process.env.PINECONE_API_KEY;
-  const pineconeEnvironment = process.env.PINECONE_ENVIRONMENT || "gcp-starter";
+  // Get index info from environment variables
+  const indexName = process.env.PINECONE_INDEX_NAME || "";
+  const apiKey = process.env.PINECONE_API_KEY || "";
 
-  // Construct the API URL based on Pinecone environment and index
-  const apiUrl = `https://${indexName}-${pineconeEnvironment}.svc.${pineconeEnvironment}.pinecone.io/query`;
+  if (!indexName || !apiKey) {
+    throw new Error("Missing required Pinecone environment variables");
+  }
+
+  // Construct the API URL - using modern Pinecone formatting
+  const apiUrl = `https://sample-app-1-41rz9sc.svc.aped-4627-b74a.pinecone.io/query`;
 
   try {
+    console.log(`Querying Pinecone at: ${apiUrl}`);
+
     // Use fetch API to call Pinecone directly (Edge compatible)
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
-        "Api-Key": apiKey || "",
+        "Api-Key": apiKey,
         "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Pinecone-API-Version": "2025-01",
       },
       body: JSON.stringify({
         vector: embeddings,
@@ -211,6 +217,7 @@ async function getMatchesFromEmbeddings(
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error(`Pinecone API error: ${response.status} ${errorText}`);
       throw new Error(`Pinecone API error: ${response.status} ${errorText}`);
     }
 
