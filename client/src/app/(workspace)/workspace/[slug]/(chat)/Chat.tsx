@@ -15,7 +15,7 @@ export default function ChatPage() {
   const { workspaces, removeWorkspace } = useWorkspaceChatContext();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
-  const [isDeleting, setIsDeleting] = useState(false);
+  // const [isDeleting, setIsDeleting] = useState(false);
   let currentWorkspaceId: string;
   let currentWorkspace;
   let currentChat;
@@ -37,24 +37,24 @@ export default function ChatPage() {
     }
   }, [pathname, workspaces, currentChat, currentWorkspace]);
 
-  const handleDeleteWorkspace = async (workspaceId: string) => {
-    setIsDeleting(true);
-    console.log(`/api/files/?namespaceId=${workspaceId}`);
-    try {
-      const response = await fetch(`/api/files/?namespaceId=${workspaceId}`, {
-        method: "DELETE",
-      });
-      const responseData = await response.json();
-      removeWorkspace(workspaceId);
-      console.log(responseData.message);
+  // const handleDeleteWorkspace = async (workspaceId: string) => {
+  //   setIsDeleting(true);
+  //   console.log(`/api/files/?namespaceId=${workspaceId}`);
+  //   try {
+  //     const response = await fetch(`/api/files/?namespaceId=${workspaceId}`, {
+  //       method: "DELETE",
+  //     });
+  //     const responseData = await response.json();
+  //     removeWorkspace(workspaceId);
+  //     console.log(responseData.message);
 
-      // Redirect to the /new page after successful deletion
-      router.push("/");
-    } catch (error) {
-      console.error("Error deleting file:", error);
-    }
-    setIsDeleting(false);
-  };
+  //     // Redirect to the /new page after successful deletion
+  //     router.push("/");
+  //   } catch (error) {
+  //     console.error("Error deleting file:", error);
+  //   }
+  //   setIsDeleting(false);
+  // };
 
   return (
     <div className="relative h-full flex justify-center items-center">

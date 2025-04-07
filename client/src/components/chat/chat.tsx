@@ -6,37 +6,19 @@ import { Workspace } from "@/lib/hooks/workspace-chat-context";
 import { PromptGrid } from "../ui/prompt-grid";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Tooltip } from "../ui/tooltip";
-import FileCard from "../ui/file-card";
+
 import {
   FiChevronLeft,
   FiChevronRight,
   FiSend,
   FiPaperclip,
 } from "react-icons/fi";
-import { FetchedFile } from "@/app/api/files/route";
-
-const fetchFileUrls = async (workspaceId: string) => {
-  try {
-    const response = await fetch(`/api/files/?namespaceId=${workspaceId}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch file URLs");
-    }
-    const files: FetchedFile[] = await response.json();
-    return files;
-  } catch (error) {
-    console.error("Error fetching file URLs:", error);
-    return [];
-  }
-};
 
 export default function Chat({ workspace }: { workspace: Workspace }) {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       body: { namespaceId: workspace.id },
     });
-
-  const [files, setFiles] = useState<FetchedFile[]>([]);
-  const [fetchingFiles, setFetchingFiles] = useState(true);
 
   // setPrompts is unused in this example, but imagine generating prompts based on the workspace content... :-)
   const [prompts, setPrompts] = useState<Prompt[]>([
@@ -70,9 +52,6 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
     },
   ]);
 
-  const [activePromptIndex, setActivePromptIndex] = useState<number>(0);
-  const promptListRef = useRef<HTMLDivElement | null>(null);
-
   const [shouldSubmit, setShouldSubmit] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -94,47 +73,11 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
     }
   }, [shouldSubmit]);
 
-  const handleDeleteFile = async (documentId: string) => {
-    console.log(
-      `/api/files/?documentId=${documentId}&namespaceId=${workspace.id}`
-    );
-    try {
-      const response = await fetch(
-        `/api/files/?documentId=${documentId}&namespaceId=${workspace.id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      const responseData = await response.json();
-      console.log(responseData.message);
-      fetchFiles();
-    } catch (error) {
-      console.error("Error deleting file:", error);
-    }
-  };
-
   const [documentTrayIsOpen, setDocumentTrayIsOpen] = useState(false);
 
   const toggleOpen = () => {
     setDocumentTrayIsOpen(!documentTrayIsOpen);
   };
-
-  const fetchFiles = useCallback(async () => {
-    setFetchingFiles(true);
-    const files = await fetchFileUrls(workspace.id);
-    setFiles(files);
-    setFetchingFiles(false);
-  }, [workspace.id]);
-
-  useEffect(() => {
-    fetchFiles();
-  }, [fetchFiles]);
-
-  useEffect(() => {
-    if (documentTrayIsOpen) {
-      fetchFiles();
-    }
-  }, [documentTrayIsOpen, fetchFiles]);
 
   return (
     <div className="relative flex flex-col w-full  h-full py-8 mx-auto px-4 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-sm">
@@ -273,29 +216,4 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
       </form>
     </div>
   );
-}
-
-/**
- * Extracts the documentId from a given file URL.
- * Assumes the URL pattern is:
- * https://domain/[namespaceId]/[documentId]/[filename]
- *
- * @param fileUrl - The URL of the file from which to extract the documentId.
- * @returns The extracted documentId or an empty string if the URL is invalid.
- */
-export function getDocumentIdFromFileUrl(fileUrl: string): string {
-  try {
-    // Parsing the URL to get the pathname
-    const url = new URL(fileUrl);
-    const pathSegments = url.pathname
-      .split("/")
-      .filter((part) => part.trim() !== "");
-
-    // Assuming the documentId is always the second segment in the path
-    const documentId = pathSegments[1]; // 0: namespaceId, 1: documentId, 2: filename
-    return documentId;
-  } catch (error) {
-    console.error("Error extracting documentId from URL:", error);
-    return "";
-  }
 }
