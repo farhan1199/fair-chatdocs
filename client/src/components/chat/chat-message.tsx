@@ -31,7 +31,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             : "bg-white border border-gray-100"
         )}
       >
-        <div className="flex flex-col space-y-2 overflow-hidden">
+        <div className="flex flex-col space-y-2 overflow-hidden pl-[8px] pr-[5px]">
           <div
             className={cn(
               "flex items-center space-x-2 text-xs",

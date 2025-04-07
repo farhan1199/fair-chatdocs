@@ -80,7 +80,7 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
   };
 
   return (
-    <div className="relative flex flex-col w-full  h-full py-8 mx-auto px-4 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-sm">
+    <div className="relative flex flex-col w-full h-full py-8 mx-auto px-4 bg-gradient-to-b from-blue-100 to-blue-50 rounded-lg shadow-sm">
       <div className="mb-6 pl-2">
         <h2 className="text-xl font-semibold text-gray-800">
           {workspace.name}
@@ -88,9 +88,9 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
         <p className="text-sm text-gray-500">Chatting with your documents</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-2 py-4 rounded-lg bg-white/80 backdrop-blur-sm shadow-inner">
+      <div className="flex-1 overflow-y-auto px-2 py-4 rounded-lg bg-white/80 backdrop-blur-sm shadow-inner overflow-x-hidden">
         {messages.length > 0 ? (
-          <div className="space-y-6">
+          <div className="space-y-6 ">
             {messages.map((m) => (
               <div key={m.id} className="whitespace-pre-wrap">
                 <ChatMessage key={m.id} message={m} />
