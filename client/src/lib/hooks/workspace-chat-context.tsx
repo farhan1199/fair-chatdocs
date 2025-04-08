@@ -35,10 +35,17 @@ const defaultWorkspaces: Workspace[] = [
   },
   {
     id: "COLLECTIVE-BARGAINING-AGREEMENT-7eac42f4-db23-4cc1-ae6d-9fe33d4b9f56",
-    name: "COLLECTIVE BARGAINING AGREEMENT",
+    name: "Collective Bargaining Agreement",
     createdAt: 1744120354959,
     fileUrls: [],
     desc: "Between 1199SEIU and LEAGUE of VOLUNTARY HOSPITALS & HOMES of NEW YORK",
+  },
+  {
+    id: "1199-Constitution-3a50e2d7-56a5-4e57-a0a6-47abe6f529c2",
+    name: "1199 Constitution",
+    createdAt: 1744122380555,
+    fileUrls: [],
+    desc: "Chat with the 1199 Constiution",
   },
 ];
 export const WorkspaceChatProvider: React.FC<{ children: React.ReactNode }> = ({
