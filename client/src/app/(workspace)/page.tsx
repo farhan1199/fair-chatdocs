@@ -146,7 +146,7 @@ const Page = () => {
 
             <div className="mt-8">
               <Link
-                href="/workspace/fc8d47ed-7556-4495-802e-8bb96ca9756e"
+                href="/workspace/Employee-Manual-38e8ef41-0b71-42d9-8e82-7479faf95234"
                 className="inline-flex items-center justify-center bg-[#1C17FF] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#1914da] transition-colors duration-200 shadow-sm"
               >
                 Chat with Employee Manual
