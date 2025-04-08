@@ -7,6 +7,7 @@ export interface Workspace {
   fileUrls: string[];
   createdAt: number;
   locked?: boolean;
+  desc?: string;
 }
 
 export interface WorkspaceChatContextValue {
@@ -32,8 +33,14 @@ const defaultWorkspaces: Workspace[] = [
     createdAt: 1744040775759,
     fileUrls: [],
   },
+  {
+    id: "COLLECTIVE-BARGAINING-AGREEMENT-7eac42f4-db23-4cc1-ae6d-9fe33d4b9f56",
+    name: "COLLECTIVE BARGAINING AGREEMENT",
+    createdAt: 1744120354959,
+    fileUrls: [],
+    desc: "Between 1199SEIU and LEAGUE of VOLUNTARY HOSPITALS & HOMES of NEW YORK",
+  },
 ];
-
 export const WorkspaceChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {

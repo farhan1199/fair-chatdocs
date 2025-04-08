@@ -85,7 +85,9 @@ export default function Chat({ workspace }: { workspace: Workspace }) {
         <h2 className="text-xl font-semibold text-gray-800">
           {workspace.name}
         </h2>
-        <p className="text-sm text-gray-500">Chatting with your documents</p>
+        <p className="text-sm text-gray-500">
+          {workspace.desc ? workspace.desc : "Chatting with your documents"}
+        </p>
       </div>
 
       <div className="flex-1 overflow-y-auto px-2 py-4 rounded-lg bg-white/80 backdrop-blur-sm shadow-inner overflow-x-hidden">
